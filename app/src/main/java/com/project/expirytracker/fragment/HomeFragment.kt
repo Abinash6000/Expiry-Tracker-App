@@ -1,6 +1,5 @@
-package com.project.expirytracker
+package com.project.expirytracker.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +9,11 @@ import android.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.project.expirytracker.db.AppDatabase
+import com.project.expirytracker.db.DatabaseModel
+import com.project.expirytracker.ItemAdapter
+import com.project.expirytracker.ItemModel
+import com.project.expirytracker.R
 import com.project.expirytracker.databinding.FragmentHomeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
-    private val itemList : ArrayList<ItemModel> = ArrayList()
+    private var itemList : ArrayList<ItemModel> = ArrayList()
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -39,6 +42,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        itemList = ArrayList()
         val adapter = ItemAdapter(itemList,requireContext())
         CoroutineScope(Dispatchers.IO).launch {
             val getData = fetchDatabase()

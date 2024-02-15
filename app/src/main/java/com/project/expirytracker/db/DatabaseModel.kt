@@ -1,4 +1,4 @@
-package com.project.expirytracker
+package com.project.expirytracker.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class DatabaseModel(
     @PrimaryKey(autoGenerate = true)
-    val id:Int =0,
+    val id:Int = 0,
     val name:String,
     val type:String,
     val quantity:Short,

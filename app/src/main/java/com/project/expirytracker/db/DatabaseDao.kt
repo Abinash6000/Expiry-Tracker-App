@@ -13,6 +13,10 @@ interface DatabaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(databaseModelList: List<DatabaseModel>)
+
+    @Query("SELECT * FROM databasemodel WHERE name LIKE :search||'%'")
+    suspend fun searchItem(search:String?):List<DatabaseModel>
+
     @Query("SELECT * FROM databaseModel")
     suspend fun itemData():List<DatabaseModel>
 }

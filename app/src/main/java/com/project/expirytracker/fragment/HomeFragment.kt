@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.expirytracker.db.AppDatabase
 import com.project.expirytracker.db.DatabaseModel
 import com.project.expirytracker.ItemAdapter
-import com.project.expirytracker.ItemModel
 import com.project.expirytracker.R
 import com.project.expirytracker.databinding.FragmentHomeBinding
 import kotlinx.coroutines.CoroutineScope
@@ -21,13 +20,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
-    private var itemList : ArrayList<ItemModel> = ArrayList()
+    private var itemList : ArrayList<DatabaseModel> = ArrayList()
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
@@ -38,21 +37,13 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        itemList = ArrayList()
+
         val adapter = ItemAdapter(itemList,requireContext())
         CoroutineScope(Dispatchers.IO).launch {
             val getData = fetchDatabase()
-
-            getData.forEach{
-                val listItem = listOf<ItemModel>(
-                    ItemModel(it.id,it.name,it.itemPrice,it.expYear,it.expMonth,it.expDate)
-                )
-                itemList.addAll(listItem)
-            }
+            itemList.addAll(getData)
             withContext(Dispatchers.Main){
                 adapter.notifyDataSetChanged()
             }
@@ -71,12 +62,7 @@ class HomeFragment : Fragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         val database = AppDatabase.getDatabase(requireContext())
                         val list = database.databaseDao().searchItem(x)
-                        list.forEach{
-                            val listItem = listOf<ItemModel>(
-                                ItemModel(it.id,it.name,it.itemPrice,it.expYear,it.expMonth,it.expDate)
-                            )
-                            itemList.addAll(listItem)
-                        }
+                        itemList.addAll(list)
                         withContext(Dispatchers.Main){
                             adapter.notifyDataSetChanged()
                         }
@@ -84,11 +70,9 @@ class HomeFragment : Fragment() {
                 }
                 return true
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 return true
             }
-
         })
     }
 

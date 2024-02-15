@@ -7,28 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.fragment.findNavController
+import com.project.expirytracker.databinding.FragmentHomeBinding
+import com.project.expirytracker.databinding.FragmentStartBinding
 
 class StartFragment : Fragment() {
+    private var _binding : FragmentStartBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_start, container, false)
-    }
+        _binding = FragmentStartBinding.inflate(inflater, container, false)
 
-    @SuppressLint("CommitTransaction")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val getStart = requireView().findViewById<Button>(R.id.get_start)
-        getStart.setOnClickListener{
-            val transition = activity?.supportFragmentManager?.beginTransaction()
-            if (transition != null) {
-                transition.replace(R.id.nav_host_fragment,HomeFragment.newInstance())
-                transition.addToBackStack(null)
-                transition.commit()
-            }
+        binding.getStartBtn.setOnClickListener{
+            findNavController().navigate(R.id.action_startFragment_to_homeFragment)
         }
-    }
+
+        return binding.root
+        //return inflater.inflate(R.layout.fragment_start, container, false)
+        }
 }

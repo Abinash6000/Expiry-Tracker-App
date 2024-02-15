@@ -1,18 +1,13 @@
 package com.project.expirytracker
 
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.project.expirytracker.db.AppDatabase
+import com.project.expirytracker.db.DatabaseModel
 
 class ItemAdapter(private val itemList:List<ItemModel>, private val context: Context):RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 

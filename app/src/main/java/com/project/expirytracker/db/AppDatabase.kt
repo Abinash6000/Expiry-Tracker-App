@@ -1,4 +1,4 @@
-package com.project.expirytracker
+package com.project.expirytracker.db
 
 import android.content.Context
 import androidx.room.Database
@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [DatabaseModel::class],version=1, exportSchema = false)
 public abstract class AppDatabase:RoomDatabase() {
 
-    abstract fun databaseDao():DatabaseDao
+    abstract fun databaseDao(): DatabaseDao
     companion object {
 
         private var INSTANCE: AppDatabase? = null

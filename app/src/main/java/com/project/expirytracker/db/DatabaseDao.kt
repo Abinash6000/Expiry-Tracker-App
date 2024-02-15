@@ -1,4 +1,4 @@
-package com.project.expirytracker
+package com.project.expirytracker.db
 
 import androidx.room.Dao
 import androidx.room.Insert

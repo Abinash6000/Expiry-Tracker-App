@@ -1,15 +1,18 @@
-package com.project.expirytracker
+package com.project.expirytracker.fragment
 
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.project.expirytracker.R
+import com.project.expirytracker.db.AppDatabase
+import com.project.expirytracker.db.DatabaseModel
 import com.project.expirytracker.databinding.FragmentAddItemBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +27,6 @@ class AddItemFragment : Fragment() {
     ): View {
         _binding = FragmentAddItemBinding.inflate(inflater, container, false)
         return binding.root
-//        return inflater.inflate(R.layout.fragment_add_item, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,38 +44,46 @@ class AddItemFragment : Fragment() {
             expDate = temp
         }
         binding.addItemButton.setOnClickListener {
-            var itemName = updateTIL(binding.enterItemName, binding.itemNameTIL)
-            var itemType:String = updateTIL(binding.enterType,binding.itemNameTIL1)
-            var itemQuantity:Short = Integer.parseInt(updateTIL(binding.enterQuantity,binding.itemNameTIL2)).toShort()
-            var price:Short = Integer.parseInt(updateTIL(binding.enterPrice,binding.itemNameTIL5)).toShort()
+            val itemName = updateTIL(binding.enterItemName, binding.itemNameTIL)
+            val itemType:String = updateTIL(binding.enterType,binding.itemNameTIL1)
+            val itemQuantity:Short = Integer.parseInt(updateTIL(binding.enterQuantity,binding.itemNameTIL2)).toShort()
+            val price:Short = Integer.parseInt(updateTIL(binding.enterPrice,binding.itemNameTIL5)).toShort()
 
-            val listItem = listOf<DatabaseModel>(
-                DatabaseModel(
-                    id,
-                    itemName,
-                    itemType,
-                    itemQuantity,
-                    mfgDate!![0].toShort(),
-                    mfgDate!![1].toByte(),
-                    mfgDate!![2].toByte(),
-                    expDate!![0].toShort(),
-                    expDate!![1].toByte(),
-                    expDate!![2].toByte(),
-                    price
-                )
-            )
-            CoroutineScope(Dispatchers.IO).launch {
-                insertDatabase(listItem)
+            if(itemName.toInt() != 0 && itemType.toInt() != 0 && itemQuantity.toInt() != 0 && price.toInt() != 0
+                && !binding.enterMfg.text.isNullOrBlank() && !binding.expDate.text.isNullOrBlank()) {
+                val databaseModel =
+                    DatabaseModel(
+                        name = itemName,
+                        type = itemType,
+                        quantity = itemQuantity,
+                        mfgYear = mfgDate!![0].toShort(),
+                        mfgMonth = mfgDate!![1].toByte(),
+                        mfgDate = mfgDate!![2].toByte(),
+                        expYear = expDate!![0].toShort(),
+                        expMonth = expDate!![1].toByte(),
+                        expDate = expDate!![2].toByte(),
+                        itemPrice = price
+                    )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    insertDatabase(databaseModel)
+                }
+
+                findNavController().navigate(R.id.action_addItemFragment_to_homeFragment)
+            } else {
+                binding.mfgDateTIL.error = "Cannot be Empty"
+                binding.expDateTIL.error = "Cannot be Empty"
             }
+
         }
     }
 
     private fun updateTIL(TIET: TextInputEditText, TIL: TextInputLayout): String {
-        var result = ""
+        var result = "0"
         if(!TIET.text.isNullOrBlank()) {
             result = TIET.text.toString()
         } else {
-            TIL.isErrorEnabled = true
+            TIL.error = "Cannot be Empty"
         }
         return result
     }
@@ -102,8 +112,8 @@ class AddItemFragment : Fragment() {
         return temp
     }
 
-    private suspend fun insertDatabase(dataArray: List<DatabaseModel>) {
+    private suspend fun insertDatabase(data: DatabaseModel) {
         val database = AppDatabase.getDatabase(requireContext())
-        database.databaseDao().insertAll(dataArray)
+        database.databaseDao().insert(data)
     }
 }

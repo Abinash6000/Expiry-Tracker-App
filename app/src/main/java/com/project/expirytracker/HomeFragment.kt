@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,6 +57,35 @@ class HomeFragment : Fragment() {
         val recyle = requireView().findViewById<RecyclerView>(R.id.item_view)
         recyle.layoutManager = LinearLayoutManager(requireContext())
         recyle.adapter = adapter
+
+        var x = ""
+        val searchView = binding.searchView
+        searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    x =query
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val database = AppDatabase.getDatabase(requireContext())
+                        val list = database.databaseDao().searchItem(x)
+                        list.forEach{
+                            val listItem = listOf<ItemModel>(
+                                ItemModel(it.id,it.name,it.itemPrice,it.expYear,it.expMonth,it.expDate)
+                            )
+                            itemList.addAll(listItem)
+                        }
+                        withContext(Dispatchers.Main){
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+        })
     }
 
     private suspend fun fetchDatabase():List<DatabaseModel> {

@@ -61,7 +61,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView5">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText"
+                android:id="@+id/enterItemName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_default_background" />
@@ -86,7 +86,7 @@
             app:layout_constraintTop_toBottomOf="@+id/itemNameTIL">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText1"
+                android:id="@+id/enterType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_default_background" />
@@ -111,7 +111,7 @@
             app:layout_constraintTop_toBottomOf="@+id/itemNameTIL1">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText2"
+                android:id="@+id/enterQuantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_default_background" />
@@ -119,7 +119,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/itemNameTIL3"
+            android:id="@+id/mfgDateTIL"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -136,14 +136,14 @@
             app:layout_constraintTop_toBottomOf="@+id/itemNameTIL2">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText3"
+                android:id="@+id/enterMfg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_default_background" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/itemNameTIL4"
+            android:id="@+id/expDateTIL"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -157,10 +157,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.791"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemNameTIL3">
+            app:layout_constraintTop_toBottomOf="@+id/mfgDateTIL">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText4"
+                android:id="@+id/exp_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_default_background" />
@@ -180,17 +180,17 @@
             app:hintTextColor="@color/dark_default_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemNameTIL4">
+            app:layout_constraintTop_toBottomOf="@+id/expDateTIL">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText5"
+                android:id="@+id/enterPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_default_background" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/addItemButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/dark_default_background"
@@ -200,12 +200,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
-            app:layout_constraintTop_toBottomOf="@+id/itemNameTIL5"
-            app:layout_constraintVertical_bias="0.763" />
-
-=======
             app:layout_constraintTop_toBottomOf="@+id/itemNameTIL5" />
->>>>>>> 5b3fcc0327f967ebc3a27c72413a4fcef7d97d44
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

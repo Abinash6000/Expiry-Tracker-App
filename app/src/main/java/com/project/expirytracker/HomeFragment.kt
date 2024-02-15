@@ -1,49 +1,65 @@
 package com.project.expirytracker
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.project.expirytracker.databinding.FragmentHomeBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
+    private val itemList : ArrayList<ItemModel> = ArrayList()
+    private var _binding : FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        binding.faButton.setOnClickListener{
+            findNavController().navigate(R.id.action_homeFragment_to_addItemFragment)
+        }
+
+        return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val addItem = requireView().findViewById<FloatingActionButton>(R.id.add_item)
-        addItem.setOnClickListener{
-            val transition = activity?.supportFragmentManager?.beginTransaction()
-            if (transition != null) {
-                transition.replace(R.id.nav_host_fragment,AddItemFragment.newInstance())
-                transition.addToBackStack(null)
-                transition.commit()
+        val adapter = ItemAdapter(itemList,requireContext())
+        CoroutineScope(Dispatchers.IO).launch {
+            val getData = fetchDatabase()
+
+            getData.forEach{
+                val listItem = listOf<ItemModel>(
+                    ItemModel(it.id,it.name,it.itemPrice,it.expYear,it.expMonth,it.expDate)
+                )
+                itemList.addAll(listItem)
+            }
+            withContext(Dispatchers.Main){
+                adapter.notifyDataSetChanged()
             }
         }
 
-        val listItem = listOf<ItemModel>(
-            ItemModel("Tropicana",40,2024,2,11),
-            ItemModel("Cake",40,2024,12,11),
-            ItemModel("GoodDay",40,2024,2,11)
-        )
-
-        val adapter = ItemAdapter(listItem)
         val recyle = requireView().findViewById<RecyclerView>(R.id.item_view)
         recyle.layoutManager = LinearLayoutManager(requireContext())
         recyle.adapter = adapter
     }
-    companion object {
-        fun newInstance() = HomeFragment()
+
+    private suspend fun fetchDatabase():List<DatabaseModel> {
+        val database = AppDatabase.getDatabase(requireContext())
+        return database.databaseDao().itemData()
     }
 }

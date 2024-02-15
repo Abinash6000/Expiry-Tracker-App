@@ -14,5 +14,5 @@ interface DatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(databaseModelList: List<DatabaseModel>)
     @Query("SELECT * FROM databaseModel")
-    suspend fun getAllContacts():List<DatabaseModel>
+    suspend fun itemData():List<DatabaseModel>
 }

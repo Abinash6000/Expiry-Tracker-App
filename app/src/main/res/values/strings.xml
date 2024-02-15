@@ -26,4 +26,5 @@
     <string name="mfg_date_">Mfg Date</string>
     <string name="_Quantity">Quantity</string>
     <string name="_item_type">Item type</string>
+    <string name="items">Items</string>
 </resources>

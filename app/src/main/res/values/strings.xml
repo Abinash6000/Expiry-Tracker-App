@@ -27,4 +27,5 @@
     <string name="_Quantity">Quantity</string>
     <string name="_item_type">Item type</string>
     <string name="items">Items</string>
+    <string name="enter_quantity">Enter Quantity</string>
 </resources>

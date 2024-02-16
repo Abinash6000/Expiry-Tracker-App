@@ -19,12 +19,12 @@ interface DatabaseDao {
     @Query("SELECT * FROM databasemodel WHERE name LIKE :search||'%'")
     suspend fun searchItem(search:String?):List<DatabaseModel>
 
-//    @Update
-//    suspend fun up(entity: Entity)
+    @Update
+    suspend fun up(item: DatabaseModel)
 
 //    @Query("UPDATE DatabaseModel SET quantity = :new WHERE id = :id")
 //    fun up(new:Short,id:Int):Int
-////    suspend fun updateQuantity(new:Short,id:Int)
+//    suspend fun updateQ(new:Short,id:Int)
 
 
 

@@ -12,7 +12,7 @@ data class DatabaseModel(
     val id:Int = 0,
     val name:String,
     val type:String,
-    val quantity:Short,
+    var quantity:Short,
 
     val mfgYear:Short,
     val mfgMonth:Byte,

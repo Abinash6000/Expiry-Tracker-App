@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.project.expirytracker.R
 import com.project.expirytracker.databinding.FragmentDetailsBinding
 import com.project.expirytracker.db.AppDatabase
+import com.project.expirytracker.db.DatabaseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,19 +62,20 @@ class DetailsFragment : Fragment() {
             builder.setPositiveButton("Sold"){dialogInterface, which ->
                 soldQuantity = Integer.parseInt(dialogLayout.findViewById<EditText>(R.id.quantity).text.toString()).toShort()
                 val sub = oldQuantity.minus(soldQuantity).toShort()
-//                var temp = ""
-//                CoroutineScope(Dispatchers.IO).launch {
-//                    temp = updateQ(sub,item.id).toString()
-//                }
+                var temp = ""
+                CoroutineScope(Dispatchers.IO).launch {
+                    item.quantity = sub
+                    temp = updateQ(item).toString()
+                }
                 Toast.makeText(context, "$sub", Toast.LENGTH_SHORT).show()
             }
 
             builder.setNegativeButton("Purchase"){dialogInterface, which ->
                 addQuantity = Integer.parseInt(dialogLayout.findViewById<EditText>(R.id.quantity).text.toString()).toShort()
                 val add = oldQuantity.plus(addQuantity).toShort()
-//                CoroutineScope(Dispatchers.IO).launch {
-////                    val x = updateQ(add,item.id)
-//                }
+                CoroutineScope(Dispatchers.IO).launch {
+                    val x = updateQ(item)
+                }
                 Toast.makeText(context, "$add", Toast.LENGTH_SHORT).show()
 
             }
@@ -84,8 +86,8 @@ class DetailsFragment : Fragment() {
 
     }
 
-//    private suspend fun updateQ(x:Short,id:Int){
-//        val db = AppDatabase.getDatabase(requireContext()).databaseDao()
-//        db.up()
-//    }
+    private suspend fun updateQ(item: DatabaseModel){
+        val db = AppDatabase.getDatabase(requireContext()).databaseDao()
+        db.up(item)
+    }
 }

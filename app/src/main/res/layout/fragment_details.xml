@@ -99,7 +99,7 @@
                     android:text="@string/item_type" />
 
                 <TextView
-                    android:id="@+id/disp_type"
+                    android:id="@+id/itemTypeTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -131,6 +131,7 @@
             tools:layout_editor_absoluteY="296dp">
 
             <TextView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
@@ -141,6 +142,7 @@
                 android:text="@string/quantity" />
 
             <TextView
+                android:id="@+id/quantityTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
@@ -178,6 +180,7 @@
                     android:text="@string/mfg_date" />
 
                 <TextView
+                    android:id="@+id/mfgDateTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
@@ -218,6 +221,7 @@
                     android:text="@string/expires_on" />
 
                 <TextView
+                    android:id="@+id/expDateTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
@@ -258,6 +262,7 @@
                     android:text="@string/original_price" />
 
                 <TextView
+                    android:id="@+id/priceTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.8"
@@ -297,6 +302,7 @@
                     android:text="@string/reduced_price" />
 
                 <TextView
+                    android:id="@+id/reducedPriceTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"

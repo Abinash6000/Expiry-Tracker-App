@@ -41,9 +41,9 @@
         android:name="com.project.expirytracker.fragment.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
-        <action
-            android:id="@+id/action_detailsFragment2_to_addItemFragment"
-            app:destination="@id/addItemFragment" />
+        <argument
+            android:name="item"
+            app:argType="com.project.expirytracker.db.DatabaseModel" />
     </fragment>
 
 </navigation>

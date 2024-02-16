@@ -1,9 +1,11 @@
 package com.project.expirytracker.db
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 @Entity
 data class DatabaseModel(
     @PrimaryKey(autoGenerate = true)
@@ -21,6 +23,6 @@ data class DatabaseModel(
     val expDate:Byte,
 
     val itemPrice:Short
-)
+) : Parcelable
 
 

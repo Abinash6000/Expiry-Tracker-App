@@ -19,6 +19,7 @@ class ItemAdapter(private val itemList:List<DatabaseModel>, private val listener
     override fun getItemCount() = itemList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         holder.bind(itemList[position], listener)
     }
 

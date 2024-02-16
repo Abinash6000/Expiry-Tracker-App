@@ -23,4 +23,6 @@ class DetailsFragment : Fragment() {
 
         return binding.root
     }
+
+
 }

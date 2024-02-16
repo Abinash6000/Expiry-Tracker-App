@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.expirytracker.db.AppDatabase
 import com.project.expirytracker.db.DatabaseModel
 
-class ItemAdapter(private val itemList:List<ItemModel>, private val context: Context):RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+class ItemAdapter(private val itemList:List<DatabaseModel>, private val context: Context):RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflate = LayoutInflater.from(parent.context)
@@ -24,8 +24,8 @@ class ItemAdapter(private val itemList:List<ItemModel>, private val context: Con
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = itemList[position]
         holder.name_item.text = item.name
-        holder.price.text = item.price.toString()
-        val expDate = "${item.date} - ${item.month} - ${item.year}"
+        holder.price.text = item.itemPrice.toString()
+        val expDate = "${item.expDate} - ${item.expMonth} - ${item.expYear}"
         holder.expDate.text = expDate
 
         holder.itemView.setOnClickListener{

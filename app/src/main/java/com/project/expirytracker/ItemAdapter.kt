@@ -30,18 +30,8 @@ class ItemAdapter(private val itemList:List<DatabaseModel>, private val context:
 
         holder.itemView.setOnClickListener{
 
-
-//            CoroutineScope(Dispatchers.IO).launch {
-//                val getData = fetchDatabase()
-//                getData.binarySearch{ item.id }
-//            }
         }
     }
-
-    private fun openDetails() {
-
-    }
-
 
     class ViewHolder(private val item: View):RecyclerView.ViewHolder(item) {
         val name_item = item.findViewById<TextView>(R.id.item_name)

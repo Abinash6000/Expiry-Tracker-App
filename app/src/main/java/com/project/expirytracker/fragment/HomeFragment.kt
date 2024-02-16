@@ -43,6 +43,7 @@ class HomeFragment : Fragment() {
         val adapter = ItemAdapter(itemList,requireContext())
         CoroutineScope(Dispatchers.IO).launch {
             val getData = fetchDatabase()
+            itemList.clear()
             itemList.addAll(getData)
             withContext(Dispatchers.Main){
                 adapter.notifyDataSetChanged()
@@ -62,6 +63,7 @@ class HomeFragment : Fragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         val database = AppDatabase.getDatabase(requireContext())
                         val list = database.databaseDao().searchItem(x)
+                        itemList.clear()
                         itemList.addAll(list)
                         withContext(Dispatchers.Main){
                             adapter.notifyDataSetChanged()

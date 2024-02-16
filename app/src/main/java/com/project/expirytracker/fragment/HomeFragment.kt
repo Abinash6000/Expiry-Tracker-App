@@ -12,14 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.expirytracker.db.AppDatabase
 import com.project.expirytracker.db.DatabaseModel
 import com.project.expirytracker.ItemAdapter
+import com.project.expirytracker.MyItemClickListener
 import com.project.expirytracker.R
 import com.project.expirytracker.databinding.FragmentHomeBinding
+import com.project.expirytracker.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToDetailsFragment2
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), MyItemClickListener {
     private var itemList : ArrayList<DatabaseModel> = ArrayList()
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -40,7 +42,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ItemAdapter(itemList,requireContext())
+        val adapter = ItemAdapter(itemList, this)
         CoroutineScope(Dispatchers.IO).launch {
             val getData = fetchDatabase()
             itemList.addAll(getData)
@@ -79,5 +81,10 @@ class HomeFragment : Fragment() {
     private suspend fun fetchDatabase():List<DatabaseModel> {
         val database = AppDatabase.getDatabase(requireContext())
         return database.databaseDao().itemData()
+    }
+
+    override fun onItemClicked(item: DatabaseModel) {
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment2(item)
+        findNavController().navigate(action)
     }
 }

@@ -3,7 +3,6 @@ package com.project.expirytracker.fragment
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,19 +29,17 @@ class AddItemFragment : Fragment() {
         return binding.root
     }
 
+    var mfgDate: Array<Int>? = null
+    var expDate: Array<Int>? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var mfgDate: Array<Int>? = null
-        var expDate: Array<Int>? = null
 
         binding.enterMfg.setOnClickListener {
-            val temp = datePicker(1)
-            mfgDate = temp
+            datePicker(1)
         }
 
         binding.expDate.setOnClickListener {
-            val temp = datePicker(2)
-            expDate = temp
+            datePicker(2)
         }
         binding.addItemButton.setOnClickListener {
             val itemName = updateTIL(binding.enterItemName, binding.itemNameTIL)
@@ -90,27 +87,31 @@ class AddItemFragment : Fragment() {
     }
 
 
-    fun datePicker(x:Int): Array<Int> {
-
+    fun datePicker(x: Int){
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val date = c.get(Calendar.DATE)
 
-        var temp = arrayOf(year, month, date)
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { view, year, monthOfYear, dayOfMonth ->
                 val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
-                if(x == 1) binding.enterMfg.setText(dat)
-                if(x ==2 ) binding.expDate.setText(dat)
+//                temp = arrayOf(year,monthOfYear,dayOfMonth)
+                if (x == 1) {
+                    mfgDate =arrayOf(year,monthOfYear,dayOfMonth)
+                    binding.enterMfg.setText(dat)
+                }
+                if (x == 2){
+                    expDate = arrayOf(year,monthOfYear,dayOfMonth)
+                    binding.expDate.setText(dat)
+                }
             },
             year,
             month,
             date
         )
         datePickerDialog.show()
-        return temp
     }
 
     private suspend fun insertDatabase(data: DatabaseModel) {

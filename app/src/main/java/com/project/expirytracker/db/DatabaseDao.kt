@@ -22,11 +22,8 @@ interface DatabaseDao {
 //    @Update
 //    suspend fun up(entity: Entity)
 
-//    @Query("UPDATE DatabaseModel SET quantity = :new WHERE id = :id")
-//    fun up(new:Short,id:Int):Int
-////    suspend fun updateQuantity(new:Short,id:Int)
-
-
+//    @Query("UPDATE DatabaseModel SET quantity = :new WHERE id LIKE :id")
+//    suspend fun updateQuantity(new:Short,id:Int)
 
     @Query("SELECT * FROM databaseModel")
     suspend fun itemData():List<DatabaseModel>

@@ -2,6 +2,7 @@ package com.project.expirytracker.fragment
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,13 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.navArgs
 import com.project.expirytracker.R
 import com.project.expirytracker.databinding.FragmentDetailsBinding
-import com.project.expirytracker.db.AppDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.Calendar
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
@@ -31,6 +34,7 @@ class DetailsFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,6 +48,9 @@ class DetailsFragment : Fragment() {
         binding.priceTV.text = "Rs. ${item.itemPrice}"
         binding.reducedPriceTV.text = "Rs. ${item.itemPrice}"
 
+        val fromDate = LocalDate.of(item.expYear.toInt(),item.expMonth.toInt(),item.expDate.toInt())
+        timeDifference(fromDate)
+
         var soldQuantity:Short
         var oldQuantity:Short = item.quantity
         var addQuantity:Short
@@ -53,7 +60,7 @@ class DetailsFragment : Fragment() {
 
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Edit Quantity")
-            builder.setMessage("Enter the Quantity Sold or Purchase\n Total Quantity: $oldQuantity")
+            builder.setMessage("Enter the Quantity Sold or Purchase\n\nTotal Quantity: $oldQuantity")
             builder.setIcon(android.R.drawable.ic_dialog_alert)
 
 
@@ -63,9 +70,9 @@ class DetailsFragment : Fragment() {
                 val sub = oldQuantity.minus(soldQuantity).toShort()
 //                var temp = ""
 //                CoroutineScope(Dispatchers.IO).launch {
-//                    temp = updateQ(sub,item.id).toString()
+//                    updateQ(sub,item.id)
 //                }
-                Toast.makeText(context, "$sub", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Updated $sub", Toast.LENGTH_SHORT).show()
             }
 
             builder.setNegativeButton("Purchase"){dialogInterface, which ->
@@ -84,8 +91,19 @@ class DetailsFragment : Fragment() {
 
     }
 
-//    private suspend fun updateQ(x:Short,id:Int){
-//        val db = AppDatabase.getDatabase(requireContext()).databaseDao()
-//        db.up()
-//    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SimpleDateFormat")
+    private fun timeDifference(fromDate: LocalDate) {
+        val time = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("dd-MM-yyyy")
+        val dateTemp = formatter.format(time)
+        val formatterT = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val Date = LocalDate.parse(dateTemp, formatterT)
+        val toDate = LocalDate.of(Date.year,Date.month,Date.dayOfMonth)
+        val daysDifference = ChronoUnit.DAYS.between(toDate,fromDate)
+
+        Toast.makeText(context, "$daysDifference", Toast.LENGTH_SHORT).show()
+
+    }
+
 }

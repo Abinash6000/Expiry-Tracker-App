@@ -19,9 +19,9 @@ class StartFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentStartBinding.inflate(inflater, container, false)
 
-//        binding.getStartBtn.setOnClickListener{
-//            findNavController().navigate(R.id.action_startFragment_to_homeFragment)
-//        }
+        binding.getStartBtn.setOnClickListener{
+            findNavController().navigate(R.id.action_startFragment_to_homeFragment)
+        }
 
         return binding.root
         //return inflater.inflate(R.layout.fragment_start, container, false)

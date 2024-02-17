@@ -3,6 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="default_background">#E0EEDA</color>
-    <color name="medium_dark_default_background">#56A73A</color>
-    <color name="dark_default_background">#5DB45B</color>
+    <color name="medium_dark_default_background">#5DB45B</color>
+    <color name="dark_default_background">#56A73A</color>
 </resources>

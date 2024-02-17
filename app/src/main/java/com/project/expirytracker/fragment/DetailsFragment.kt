@@ -35,6 +35,9 @@ class DetailsFragment : Fragment() {
     ): View? {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
+        binding.backBtn.setOnClickListener {
+            getActivity()?.onBackPressedDispatcher?.onBackPressed()
+        }
 
         return binding.root
     }
@@ -59,7 +62,7 @@ class DetailsFragment : Fragment() {
         var soldQuantity:Short
         var oldQuantity:Short = item.quantity
         var addQuantity:Short
-        binding.quantity.setOnClickListener{
+        binding.quantityTV.setOnClickListener{
             val inflater = layoutInflater
             val dialogLayout = inflater.inflate(R.layout.alert_quantity,null)
 

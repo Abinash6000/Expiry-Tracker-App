@@ -11,6 +11,7 @@
         android:layout_width="210dp"
         android:layout_height="140dp"
         android:scaleType="fitXY"
+        android:alpha="0.8"
         android:src="@drawable/top_left_elipse_removebg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

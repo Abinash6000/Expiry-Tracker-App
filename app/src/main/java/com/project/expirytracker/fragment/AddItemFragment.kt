@@ -26,6 +26,11 @@ class AddItemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddItemBinding.inflate(inflater, container, false)
+
+        binding.backBtn.setOnClickListener {
+            getActivity()?.onBackPressedDispatcher?.onBackPressed()
+        }
+
         return binding.root
     }
 
@@ -97,13 +102,12 @@ class AddItemFragment : Fragment() {
             requireContext(),
             { view, year, monthOfYear, dayOfMonth ->
                 val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
-//                temp = arrayOf(year,monthOfYear,dayOfMonth)
                 if (x == 1) {
-                    mfgDate =arrayOf(year,monthOfYear,dayOfMonth)
+                    mfgDate =arrayOf(year,monthOfYear+1,dayOfMonth)
                     binding.enterMfg.setText(dat)
                 }
                 if (x == 2){
-                    expDate = arrayOf(year,monthOfYear,dayOfMonth)
+                    expDate = arrayOf(year,monthOfYear+1,dayOfMonth)
                     binding.expDate.setText(dat)
                 }
             },

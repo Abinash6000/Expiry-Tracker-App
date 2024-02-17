@@ -7,12 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import com.project.expirytracker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding:ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-//        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
     }
 }

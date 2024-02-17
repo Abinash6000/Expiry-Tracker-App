@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.project.expirytracker.StartFragment"
+        android:name="com.project.expirytracker.fragment.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" >
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.project.expirytracker.HomeFragment"
+        android:name="com.project.expirytracker.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -29,24 +29,21 @@
     </fragment>
     <fragment
         android:id="@+id/addItemFragment"
-        android:name="com.project.expirytracker.AddItemFragment"
+        android:name="com.project.expirytracker.fragment.AddItemFragment"
         android:label="fragment_add_item"
         tools:layout="@layout/fragment_add_item" >
-        <argument
-            android:name="item"
-            app:argType="com.project.expirytracker.Item"/>
         <action
-            android:id="@+id/action_startFragment_to_homeFragment"
+            android:id="@+id/action_addItemFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment2"
-        android:name="com.project.expirytracker.DetailsFragment"
+        android:name="com.project.expirytracker.fragment.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
-        <action
-            android:id="@+id/action_detailsFragment2_to_addItemFragment"
-            app:destination="@id/addItemFragment" />
+        <argument
+            android:name="item"
+            app:argType="com.project.expirytracker.db.DatabaseModel" />
     </fragment>
 
 </navigation>

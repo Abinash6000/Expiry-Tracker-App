@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background"
-    tools:context=".StartFragment">
+    tools:context=".fragment.StartFragment">
 
     <ImageView
         android:layout_width="210dp"
         android:layout_height="140dp"
         android:scaleType="fitXY"
+        android:alpha="0.8"
         android:src="@drawable/top_left_elipse_removebg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

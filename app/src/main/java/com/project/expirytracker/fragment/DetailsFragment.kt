@@ -19,6 +19,11 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Calendar
+import com.project.expirytracker.db.AppDatabase
+import com.project.expirytracker.db.DatabaseModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
@@ -68,19 +73,21 @@ class DetailsFragment : Fragment() {
             builder.setPositiveButton("Sold"){dialogInterface, which ->
                 soldQuantity = Integer.parseInt(dialogLayout.findViewById<EditText>(R.id.quantity).text.toString()).toShort()
                 val sub = oldQuantity.minus(soldQuantity).toShort()
-//                var temp = ""
-//                CoroutineScope(Dispatchers.IO).launch {
-//                    updateQ(sub,item.id)
-//                }
-                Toast.makeText(context, "Updated $sub", Toast.LENGTH_SHORT).show()
+
+                var temp = ""
+                CoroutineScope(Dispatchers.IO).launch {
+                    item.quantity = sub
+                    temp = updateQ(item).toString()
+                }
+                Toast.makeText(context, "$sub", Toast.LENGTH_SHORT).show()
             }
 
             builder.setNegativeButton("Purchase"){dialogInterface, which ->
                 addQuantity = Integer.parseInt(dialogLayout.findViewById<EditText>(R.id.quantity).text.toString()).toShort()
                 val add = oldQuantity.plus(addQuantity).toShort()
-//                CoroutineScope(Dispatchers.IO).launch {
-////                    val x = updateQ(add,item.id)
-//                }
+                CoroutineScope(Dispatchers.IO).launch {
+                    val x = updateQ(item)
+                }
                 Toast.makeText(context, "$add", Toast.LENGTH_SHORT).show()
 
             }
@@ -90,6 +97,7 @@ class DetailsFragment : Fragment() {
         }
 
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
@@ -106,4 +114,8 @@ class DetailsFragment : Fragment() {
 
     }
 
+    private suspend fun updateQ(item: DatabaseModel){
+        val db = AppDatabase.getDatabase(requireContext()).databaseDao()
+        db.up(item)
+    }
 }

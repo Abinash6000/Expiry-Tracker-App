@@ -1,11 +1,14 @@
 package com.project.expirytracker.fragment
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 class HomeFragment : Fragment(), MyItemClickListener {
     private var itemList : ArrayList<DatabaseModel> = ArrayList()
@@ -38,9 +42,11 @@ class HomeFragment : Fragment(), MyItemClickListener {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        5
         val adapter = ItemAdapter(itemList, this)
         CoroutineScope(Dispatchers.IO).launch {
             val getData = fetchDatabase()
@@ -77,6 +83,30 @@ class HomeFragment : Fragment(), MyItemClickListener {
                 return true
             }
         })
+        binding.filter.setOnClickListener{
+            val sortedList: MutableList<DatabaseModel> = mutableListOf()
+
+//            Toast.makeText(requireContext(), "filterBtn", Toast.LENGTH_SHORT).show()
+            itemList.forEach{
+                val fromDate = LocalDate.of(it.expYear.toInt(),it.expMonth.toInt(),it.expDate.toInt())
+                val x = soldTrack(it.quantity,fromDate,it.arrayData).toInt()+1
+//                Toast.makeText(requireContext(), "$x", Toast.LENGTH_SHORT).show()
+                if(x>0){
+                    sortedList += it
+                }
+            }
+
+            if(sortedList.isEmpty()){
+//                Toast.makeText(requireContext(), "toast1", Toast.LENGTH_SHORT).show()
+                itemList.clear()
+                adapter.notifyDataSetChanged()
+            }else{
+//                Toast.makeText(requireContext(), "toast2", Toast.LENGTH_SHORT).show()
+                itemList.clear()
+                itemList.addAll(sortedList)
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private suspend fun fetchDatabase():List<DatabaseModel> {
@@ -88,4 +118,5 @@ class HomeFragment : Fragment(), MyItemClickListener {
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment2(item)
         findNavController().navigate(action)
     }
+
 }

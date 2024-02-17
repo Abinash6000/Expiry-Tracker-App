@@ -55,12 +55,12 @@ class DetailsFragment : Fragment() {
         binding.mfgDateTV.text = "${item.mfgDate}-${item.mfgMonth}-${item.mfgYear}"
         binding.expDateTV.text = "${item.expDate}-${item.expMonth}-${item.expYear}"
         binding.priceTV.text = "Rs. ${item.itemPrice}"
-//        binding.reducedPriceTV.text = "Rs. ${item.itemPrice}"
-
-        binding.reducedPriceTV.text = reducePrice(item.soldT,item.itemPrice).toString()
+        val fromDate = LocalDate.of(item.expYear.toInt(),item.expMonth.toInt(),item.expDate.toInt())
+        val red = reducePrice(item.itemPrice,item.arrayData,item.quantity,fromDate)
+        binding.reducedPriceTV.text = "$red"
 //        timeDifference(fromDate)
 
-        var soldQuantity:Int
+        var soldQuantity:Int =0
         var oldQuantity:Short = item.quantity
         var addQuantity:Short
         binding.quantityTV.setOnClickListener{
@@ -73,20 +73,20 @@ class DetailsFragment : Fragment() {
             builder.setIcon(android.R.drawable.ic_dialog_alert)
 
 
+
             builder.setView(dialogLayout)
             builder.setPositiveButton("Sold"){dialogInterface, which ->
                 soldQuantity = Integer.parseInt(dialogLayout.findViewById<EditText>(R.id.quantity).text.toString())
                 val sub = oldQuantity.minus(soldQuantity).toShort()
 
 
-                val fromDate = LocalDate.of(item.expYear.toInt(),item.expMonth.toInt(),item.expDate.toInt())
-                val soldA =  soldTrack(oldQuantity,fromDate,item.soldT,soldQuantity)
+//                val fromDate = LocalDate.of(item.expYear.toInt(),item.expMonth.toInt(),item.expDate.toInt())
 
-
+                var arrTemp = item.arrayData
+                arrTemp += soldQuantity
                 CoroutineScope(Dispatchers.IO).launch {
                     item.quantity = sub
-                    item.soldT = soldA
-                    item.soldQuantity = soldQuantity
+                    item.arrayData = arrTemp
                     updateQ(item)
                 }
 //                Toast.makeText(context, "$sub", Toast.LENGTH_SHORT).show()
@@ -112,39 +112,53 @@ class DetailsFragment : Fragment() {
 
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("SimpleDateFormat")
-    private fun timeDifference(fromDate: LocalDate):Long {
-        val time = Calendar.getInstance().time
-        val formatter = SimpleDateFormat("dd-MM-yyyy")
-        val dateTemp = formatter.format(time)
-        val formatterT = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        val Date = LocalDate.parse(dateTemp, formatterT)
-        val toDate = LocalDate.of(Date.year,Date.month,Date.dayOfMonth)
-        val daysDifference = ChronoUnit.DAYS.between(toDate,fromDate)
-        return daysDifference
-    }
-
     private suspend fun updateQ(item: DatabaseModel){
         val db = AppDatabase.getDatabase(requireContext()).databaseDao()
         db.up(item)
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun soldTrack(q: Short, fromDate: LocalDate, soldT: Float, soldQuantity: Int):Float{
-        var RR:Float = q/timeDifference(fromDate).toFloat()
-        var CRR  = (soldT+soldQuantity)/2
-        if(soldT.toInt() == 0){
-            CRR = soldQuantity.toFloat()
+    private fun reducePrice(
+        price: Short,
+        arrayData: Array<Int>,
+        quantity: Short,
+        fromDate: LocalDate
+    ): Any {
+        val x = soldTrack(quantity,fromDate,arrayData).toInt()
+        val temp = x*2
+        if(x>0 && temp<50){
+            return price - price*temp/100
         }
-        var d =( RR - CRR )
-        return d
-    }
-    private fun reducePrice(soldA: Float, itemPrice: Short): Any {
-        if(soldA>0) {
-            return itemPrice - (itemPrice * soldA.toInt() / 100)
-        }else{
-            return itemPrice
+        else{
+            return price
         }
     }
+}
+@RequiresApi(Build.VERSION_CODES.O)
+public fun soldTrack(q: Short, fromDate: LocalDate, arrayData: Array<Int>,):Float{
+    var RR:Float = q/timeDifference(fromDate).toFloat()
+
+    var temp = 0
+    arrayData.forEach {
+        temp += it
+    }
+    if(arrayData.size ==0){
+        return RR
+    }else{
+        val CRR = (temp/arrayData.size).toFloat()
+        return RR-CRR
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("SimpleDateFormat")
+private fun timeDifference(fromDate: LocalDate):Long {
+    val time = Calendar.getInstance().time
+    val formatter = SimpleDateFormat("dd-MM-yyyy")
+    val dateTemp = formatter.format(time)
+    val formatterT = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    val Date = LocalDate.parse(dateTemp, formatterT)
+    val toDate = LocalDate.of(Date.year,Date.month,Date.dayOfMonth)
+    val daysDifference = ChronoUnit.DAYS.between(toDate,fromDate)
+    return daysDifference
 }

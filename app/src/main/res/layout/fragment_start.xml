@@ -64,15 +64,18 @@
                 app:layout_constraintBottom_toBottomOf="@+id/leaf_hor"
                 app:layout_constraintStart_toEndOf="@+id/leaf_hor"
                 />
-            <ImageView
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/startScreenIV"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_marginTop="12dp"
-                android:src="@drawable/start_screen_image_removebg"
+                android:elevation="5dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
                 app:layout_constraintTop_toBottomOf="@+id/teamTV"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:lottie_rawRes="@raw/animation"/>
             <TextView
                 android:id="@+id/startMessageTV"
                 android:layout_width="wrap_content"

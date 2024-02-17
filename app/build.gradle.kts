@@ -58,4 +58,5 @@ dependencies {
     kapt ("androidx.room:room-compiler:2.6.1")
     androidTestImplementation ("androidx.room:room-testing:2.6.1")
     implementation ("com.google.code.gson:gson:2.8.2")
+    implementation ("com.airbnb.android:lottie:3.4.0")
 }

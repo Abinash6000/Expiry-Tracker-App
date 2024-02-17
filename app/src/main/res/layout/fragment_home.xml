@@ -98,10 +98,10 @@
             android:queryHint="Search for an item"
             app:layout_constraintTop_toBottomOf="@id/introCV"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ellipseBtn" >
+            app:layout_constraintEnd_toStartOf="@+id/filterBtn" >
         </SearchView>
         <ImageView
-            android:id="@+id/ellipseBtn"
+            android:id="@+id/filterBtn"
             android:layout_width="28dp"
             android:layout_height="40dp"
             android:src="@drawable/ellipse"
@@ -132,15 +132,6 @@
             android:backgroundTint="@color/dark_default_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <Button
-            android:id="@+id/filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

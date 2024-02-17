@@ -22,7 +22,9 @@ data class DatabaseModel(
     val expMonth:Byte,
     val expDate:Byte,
 
-    val itemPrice:Short
+    val itemPrice:Short,
+    var soldT: Float =0f,
+    var soldQuantity:Int = 0
 ) : Parcelable
 
 

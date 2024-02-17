@@ -15,7 +15,6 @@ import com.project.expirytracker.ItemAdapter
 import com.project.expirytracker.MyItemClickListener
 import com.project.expirytracker.R
 import com.project.expirytracker.databinding.FragmentHomeBinding
-import com.project.expirytracker.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToDetailsFragment2
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,8 +59,11 @@ class HomeFragment : Fragment(), MyItemClickListener {
         val searchView = binding.searchView
         searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    x =query
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    x =newText
                     CoroutineScope(Dispatchers.IO).launch {
                         val database = AppDatabase.getDatabase(requireContext())
                         val list = database.databaseDao().searchItem(x)
@@ -72,9 +74,6 @@ class HomeFragment : Fragment(), MyItemClickListener {
                         }
                     }
                 }
-                return true
-            }
-            override fun onQueryTextChange(newText: String?): Boolean {
                 return true
             }
         })

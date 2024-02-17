@@ -74,10 +74,9 @@ class DetailsFragment : Fragment() {
                 soldQuantity = Integer.parseInt(dialogLayout.findViewById<EditText>(R.id.quantity).text.toString()).toShort()
                 val sub = oldQuantity.minus(soldQuantity).toShort()
 
-                var temp = ""
                 CoroutineScope(Dispatchers.IO).launch {
                     item.quantity = sub
-                    temp = updateQ(item).toString()
+                    updateQ(item)
                 }
                 Toast.makeText(context, "$sub", Toast.LENGTH_SHORT).show()
             }
@@ -86,13 +85,13 @@ class DetailsFragment : Fragment() {
                 addQuantity = Integer.parseInt(dialogLayout.findViewById<EditText>(R.id.quantity).text.toString()).toShort()
                 val add = oldQuantity.plus(addQuantity).toShort()
                 CoroutineScope(Dispatchers.IO).launch {
-                    val x = updateQ(item)
+                    item.quantity = add
+                    updateQ(item)
                 }
                 Toast.makeText(context, "$add", Toast.LENGTH_SHORT).show()
 
             }
             val alertDialog: AlertDialog = builder.create()
-//            alertDialog.setCancelable(false)
             alertDialog.show()
         }
 

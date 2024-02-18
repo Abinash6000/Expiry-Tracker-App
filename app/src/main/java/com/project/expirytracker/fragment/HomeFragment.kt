@@ -1,11 +1,16 @@
 package com.project.expirytracker.fragment
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,9 +24,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+
+public var itemList : ArrayList<DatabaseModel> = ArrayList()
+public var adapter : ItemAdapter? = null
 
 class HomeFragment : Fragment(), MyItemClickListener {
-    private var itemList : ArrayList<DatabaseModel> = ArrayList()
+
+    val customMenu = com.project.expirytracker.FilterMenu()
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -38,16 +48,18 @@ class HomeFragment : Fragment(), MyItemClickListener {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ItemAdapter(itemList, this)
+
+        adapter = ItemAdapter(itemList, this)
         CoroutineScope(Dispatchers.IO).launch {
-            val getData = fetchDatabase()
+            val getData = fetchDatabase(requireContext())
             itemList.clear()
             itemList.addAll(getData)
             withContext(Dispatchers.Main){
-                adapter.notifyDataSetChanged()
+                adapter?.notifyDataSetChanged()
             }
         }
 
@@ -70,22 +82,85 @@ class HomeFragment : Fragment(), MyItemClickListener {
                         itemList.clear()
                         itemList.addAll(list)
                         withContext(Dispatchers.Main){
-                            adapter.notifyDataSetChanged()
+                            adapter!!.notifyDataSetChanged()
                         }
                     }
                 }
                 return true
             }
         })
+
+        binding.filterBtn.setOnClickListener{
+            CoroutineScope(Dispatchers.IO).launch {
+                val getData = fetchDatabase(requireContext())
+                itemList.clear()
+                itemList.addAll(getData)
+                withContext(Dispatchers.Main){
+                    adapter?.notifyDataSetChanged()
+                }
+            }
+            customMenu.showMenu(requireContext(),it)
+        }
     }
 
-    private suspend fun fetchDatabase():List<DatabaseModel> {
-        val database = AppDatabase.getDatabase(requireContext())
-        return database.databaseDao().itemData()
-    }
+
 
     override fun onItemClicked(item: DatabaseModel) {
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment2(item)
         findNavController().navigate(action)
+    }
+}
+public suspend fun fetchDatabase(context: Context):List<DatabaseModel> {
+    val database = AppDatabase.getDatabase(context)
+    return database.databaseDao().itemData()
+}
+
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+public fun sortByWaste(context: Context) {
+    val sortedList: MutableList<DatabaseModel> = mutableListOf()
+//            Toast.makeText(requireContext(), "filterBtn", Toast.LENGTH_SHORT).show()
+    itemList.forEach{
+        val fromDate = LocalDate.of(it.expYear.toInt(),it.expMonth.toInt(),it.expDate.toInt())
+        val x = soldTrack(it.quantity,fromDate,it.arrayData).toInt()+1
+//                Toast.makeText(requireContext(), "$x", Toast.LENGTH_SHORT).show()
+        if(x>0){
+            sortedList += it
+        }
+    }
+
+    if(sortedList.isEmpty()){
+//                Toast.makeText(requireContext(), "toast1", Toast.LENGTH_SHORT).show()
+        itemList.clear()
+        adapter?.notifyDataSetChanged()
+    }else{
+//                Toast.makeText(requireContext(), "toast2", Toast.LENGTH_SHORT).show()
+        itemList.clear()
+        itemList.addAll(sortedList)
+        adapter?.notifyDataSetChanged()
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+public fun sortByShortage(context: Context){
+    val sortedList: MutableList<DatabaseModel> = mutableListOf()
+
+    itemList.forEach{
+        val fromDate = LocalDate.of(it.expYear.toInt(),it.expMonth.toInt(),it.expDate.toInt())
+        val x = soldTrack(it.quantity,fromDate,it.arrayData).toInt()
+        if(x<0){
+            sortedList += it
+        }
+    }
+    if(sortedList.isEmpty()){
+//        Toast.makeText(context, "toast1", Toast.LENGTH_SHORT).show()
+        itemList.clear()
+        adapter?.notifyDataSetChanged()
+    }else{
+//                Toast.makeText(requireContext(), "toast2", Toast.LENGTH_SHORT).show()
+        itemList.clear()
+        itemList.addAll(sortedList)
+        adapter?.notifyDataSetChanged()
     }
 }

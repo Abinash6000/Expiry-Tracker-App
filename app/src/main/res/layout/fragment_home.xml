@@ -95,10 +95,19 @@
             android:background="@drawable/searchviewshape"
             android:iconifiedByDefault="false"
             android:elevation="8dp"
-            android:queryHint="Search for A City"
+            android:queryHint="Search for an item"
             app:layout_constraintTop_toBottomOf="@id/introCV"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/filterBtn" >
+        </SearchView>
+        <ImageView
+            android:id="@+id/filterBtn"
+            android:layout_width="28dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ellipse"
+            app:layout_constraintBottom_toBottomOf="@+id/searchView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/searchView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/item_view"

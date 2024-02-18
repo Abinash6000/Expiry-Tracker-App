@@ -1,5 +1,6 @@
 package com.project.expirytracker.fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -8,9 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -109,6 +108,31 @@ class HomeFragment : Fragment(), MyItemClickListener {
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment2(item)
         findNavController().navigate(action)
     }
+
+    override fun onLongPress(item: Int) {
+
+        val inflater = layoutInflater
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirm Delete")
+        builder.setPositiveButton("DELETE"){dialog,it->
+            CoroutineScope(Dispatchers.IO).launch {
+                deleteItem(requireContext(),item)
+                val getData = fetchDatabase(requireContext())
+                itemList.clear()
+                itemList.addAll(getData)
+                withContext(Dispatchers.Main){
+                    adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+        val alertDialog:AlertDialog = builder.create()
+        alertDialog.show()
+
+    }
+}
+private suspend fun deleteItem(context: Context,id:Int){
+    val db = AppDatabase.getDatabase(context)
+    db.databaseDao().delete(id)
 }
 public suspend fun fetchDatabase(context: Context):List<DatabaseModel> {
     val database = AppDatabase.getDatabase(context)

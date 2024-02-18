@@ -1,6 +1,7 @@
 package com.project.expirytracker.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -21,6 +22,9 @@ interface DatabaseDao {
 
     @Update
     suspend fun up(item: DatabaseModel)
+
+    @Query("DELETE FROM DatabaseModel WHERE id = :id")
+    suspend fun delete(id:Int)
 
     @Query("SELECT * FROM databaseModel")
     suspend fun itemData():List<DatabaseModel>

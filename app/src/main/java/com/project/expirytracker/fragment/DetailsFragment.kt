@@ -24,6 +24,7 @@ import com.project.expirytracker.db.DatabaseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
@@ -69,14 +70,13 @@ class DetailsFragment : Fragment() {
 
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Edit Quantity")
-            builder.setMessage("Enter the Quantity Sold or Purchase\n\nTotal Quantity: $oldQuantity")
-            builder.setIcon(android.R.drawable.ic_dialog_alert)
-
-
+            builder.setMessage("Enter the Quantity Sold or Purchase\n\nTotal Quantity: ${item.quantity}")
+            builder.setIcon(R.drawable.ic_dialog)
 
             builder.setView(dialogLayout)
             builder.setPositiveButton("Sold"){dialogInterface, which ->
                 soldQuantity = Integer.parseInt(dialogLayout.findViewById<EditText>(R.id.quantity).text.toString())
+
                 val sub = oldQuantity.minus(soldQuantity).toShort()
 
 
@@ -90,6 +90,17 @@ class DetailsFragment : Fragment() {
                     updateQ(item)
                 }
 //                Toast.makeText(context, "$sub", Toast.LENGTH_SHORT).show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val getData = fetchDatabase(requireContext())
+                    itemList.clear()
+                    itemList.addAll(getData)
+                    withContext(Dispatchers.Main){
+                        adapter?.notifyDataSetChanged()
+                    }
+                }
+
+                binding.quantityTV.text = item.quantity.toString()
+                binding.reducedPriceTV.text = "$red"
 
             }
 
@@ -100,7 +111,18 @@ class DetailsFragment : Fragment() {
                     item.quantity = add
                     updateQ(item)
                 }
-                Toast.makeText(context, "$add", Toast.LENGTH_SHORT).show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val getData = fetchDatabase(requireContext())
+                    itemList.clear()
+                    itemList.addAll(getData)
+                    withContext(Dispatchers.Main){
+                        adapter?.notifyDataSetChanged()
+                    }
+                }
+
+                binding.quantityTV.text = item.quantity.toString()
+                binding.reducedPriceTV.text = "$red"
+//                Toast.makeText(context, "$add", Toast.LENGTH_SHORT).show()
 
             }
             val alertDialog: AlertDialog = builder.create()

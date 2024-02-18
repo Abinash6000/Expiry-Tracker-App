@@ -1,5 +1,7 @@
 package com.project.expirytracker.fragment
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -8,15 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.expirytracker.db.AppDatabase
 import com.project.expirytracker.db.DatabaseModel
 import com.project.expirytracker.ItemAdapter
+import com.project.expirytracker.MainActivity
 import com.project.expirytracker.MyItemClickListener
 import com.project.expirytracker.R
 import com.project.expirytracker.databinding.FragmentHomeBinding
@@ -30,10 +32,10 @@ public var itemList : ArrayList<DatabaseModel> = ArrayList()
 public var adapter : ItemAdapter? = null
 
 class HomeFragment : Fragment(), MyItemClickListener {
-
     val customMenu = com.project.expirytracker.FilterMenu()
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +46,6 @@ class HomeFragment : Fragment(), MyItemClickListener {
         binding.faButton.setOnClickListener{
             findNavController().navigate(R.id.action_homeFragment_to_addItemFragment)
         }
-
         return binding.root
     }
 
@@ -109,6 +110,31 @@ class HomeFragment : Fragment(), MyItemClickListener {
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment2(item)
         findNavController().navigate(action)
     }
+
+    override fun onLongPress(item: Int) {
+
+        val inflater = layoutInflater
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirm Delete")
+        builder.setPositiveButton("DELETE"){dialog,it->
+            CoroutineScope(Dispatchers.IO).launch {
+                deleteItem(requireContext(),item)
+                val getData = fetchDatabase(requireContext())
+                itemList.clear()
+                itemList.addAll(getData)
+                withContext(Dispatchers.Main){
+                    adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+        val alertDialog:AlertDialog = builder.create()
+        alertDialog.show()
+
+    }
+}
+private suspend fun deleteItem(context: Context,id:Int){
+    val db = AppDatabase.getDatabase(context)
+    db.databaseDao().delete(id)
 }
 public suspend fun fetchDatabase(context: Context):List<DatabaseModel> {
     val database = AppDatabase.getDatabase(context)

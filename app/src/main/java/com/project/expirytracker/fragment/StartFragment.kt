@@ -16,7 +16,6 @@ class StartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentStartBinding.inflate(inflater, container, false)
 
         binding.getStartBtn.setOnClickListener{
@@ -24,6 +23,5 @@ class StartFragment : Fragment() {
         }
 
         return binding.root
-        //return inflater.inflate(R.layout.fragment_start, container, false)
         }
 }

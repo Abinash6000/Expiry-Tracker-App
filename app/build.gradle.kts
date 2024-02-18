@@ -59,4 +59,9 @@ dependencies {
     androidTestImplementation ("androidx.room:room-testing:2.6.1")
     implementation ("com.google.code.gson:gson:2.8.2")
     implementation ("com.airbnb.android:lottie:3.4.0")
+    implementation("com.github.doyaaaaaken:kotlin-csv-js:1.9.3")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-csv:0.3.0")
+
+
 }

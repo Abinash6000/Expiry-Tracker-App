@@ -1,5 +1,6 @@
 package com.project.expirytracker.fragment
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
@@ -10,12 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.annotation.RequiresApi
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.expirytracker.db.AppDatabase
 import com.project.expirytracker.db.DatabaseModel
 import com.project.expirytracker.ItemAdapter
+import com.project.expirytracker.MainActivity
 import com.project.expirytracker.MyItemClickListener
 import com.project.expirytracker.R
 import com.project.expirytracker.databinding.FragmentHomeBinding
@@ -29,10 +32,10 @@ public var itemList : ArrayList<DatabaseModel> = ArrayList()
 public var adapter : ItemAdapter? = null
 
 class HomeFragment : Fragment(), MyItemClickListener {
-
     val customMenu = com.project.expirytracker.FilterMenu()
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +46,6 @@ class HomeFragment : Fragment(), MyItemClickListener {
         binding.faButton.setOnClickListener{
             findNavController().navigate(R.id.action_homeFragment_to_addItemFragment)
         }
-
         return binding.root
     }
 

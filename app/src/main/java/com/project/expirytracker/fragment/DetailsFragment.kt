@@ -70,14 +70,13 @@ class DetailsFragment : Fragment() {
 
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Edit Quantity")
-            builder.setMessage("Enter the Quantity Sold or Purchase\n\nTotal Quantity: $oldQuantity")
+            builder.setMessage("Enter the Quantity Sold or Purchase\n\nTotal Quantity: ${item.quantity}")
             builder.setIcon(R.drawable.ic_dialog)
-
-
 
             builder.setView(dialogLayout)
             builder.setPositiveButton("Sold"){dialogInterface, which ->
                 soldQuantity = Integer.parseInt(dialogLayout.findViewById<EditText>(R.id.quantity).text.toString())
+
                 val sub = oldQuantity.minus(soldQuantity).toShort()
 
 

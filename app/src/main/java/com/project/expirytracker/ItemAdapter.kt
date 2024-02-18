@@ -1,16 +1,12 @@
 package com.project.expirytracker
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.project.expirytracker.databinding.CardItemBinding
-import com.project.expirytracker.db.AppDatabase
 import com.project.expirytracker.db.DatabaseModel
 import com.project.expirytracker.fragment.soldTrack
 import java.time.LocalDate
@@ -51,6 +47,10 @@ class ItemAdapter(private val itemList:List<DatabaseModel>, private val listener
             binding.root.setOnClickListener {
                 listener.onItemClicked(item)
             }
+            binding.root.setOnLongClickListener{
+                listener.onLongPress(item.id)
+                return@setOnLongClickListener true
+            }
         }
     }
 }
@@ -58,4 +58,6 @@ class ItemAdapter(private val itemList:List<DatabaseModel>, private val listener
 
 interface MyItemClickListener {
     fun onItemClicked(item: DatabaseModel)
+    fun onLongPress(item: Int)
 }
+

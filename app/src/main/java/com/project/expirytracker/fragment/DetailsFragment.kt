@@ -55,10 +55,10 @@ class DetailsFragment : Fragment() {
         binding.quantityTV.text = item.quantity.toString()
         binding.mfgDateTV.text = "${item.mfgDate}-${item.mfgMonth}-${item.mfgYear}"
         binding.expDateTV.text = "${item.expDate}-${item.expMonth}-${item.expYear}"
-        binding.priceTV.text = "Rs. ${item.itemPrice}"
+        binding.priceTV.text = "₹ ${item.itemPrice}"
         val fromDate = LocalDate.of(item.expYear.toInt(),item.expMonth.toInt(),item.expDate.toInt())
         val red = reducePrice(item.itemPrice,item.arrayData,item.quantity,fromDate)
-        binding.reducedPriceTV.text = "$red"
+        binding.reducedPriceTV.text = "₹ $red"
 //        timeDifference(fromDate)
 
         var soldQuantity:Int =0
@@ -100,7 +100,7 @@ class DetailsFragment : Fragment() {
                 }
 
                 binding.quantityTV.text = item.quantity.toString()
-                binding.reducedPriceTV.text = "$red"
+                binding.reducedPriceTV.text = "₹ $red"
 
             }
 
@@ -121,7 +121,7 @@ class DetailsFragment : Fragment() {
                 }
 
                 binding.quantityTV.text = item.quantity.toString()
-                binding.reducedPriceTV.text = "$red"
+                binding.reducedPriceTV.text = "₹ $red"
 //                Toast.makeText(context, "$add", Toast.LENGTH_SHORT).show()
 
             }

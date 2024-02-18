@@ -6,5 +6,5 @@
         android:title="Filter by Wastage"
         app:showAsAction="ifRoom"/>
     <item android:id="@+id/out"
-        android:title="Filter by out of Stock" />
+        android:title="Filter by Shortage"/>
 </menu>

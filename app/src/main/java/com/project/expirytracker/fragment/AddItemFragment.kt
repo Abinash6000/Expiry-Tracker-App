@@ -4,14 +4,10 @@ import android.app.AlarmManager
 import android.app.DatePickerDialog
 import android.app.PendingIntent
 import android.content.Context
-import android.app.Activity.RESULT_OK
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract.Intents.Insert.ACTION
-import android.provider.LiveFolders.INTENT
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +33,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 
-public var path:String? = null
+//public var path:String? = null
 class AddItemFragment : Fragment() {
 
     private var _binding: FragmentAddItemBinding? = null

@@ -1,6 +1,7 @@
 package com.project.expirytracker
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -39,9 +40,11 @@ class ItemAdapter(private val itemList:List<DatabaseModel>, private val listener
             val temp = soldTrack(item.quantity,fromDate,item.arrayData).toInt()
 
             if(temp>0){
-                binding.pWaste.text = "Probable Wastage: $temp"
+                binding.pWaste.setTextColor(Color.parseColor("#B83039"))
+                binding.pWaste.text = "Probable Wastage: ${temp+1}"
             }else{
-                val x = -temp
+                val x = -temp+1
+                binding.pWaste.setTextColor(Color.parseColor("#3F68A5"))
                 binding.pWaste.text = "Probable Shortage: $x"
             }
 

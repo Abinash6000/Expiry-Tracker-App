@@ -1,12 +1,17 @@
 package com.project.expirytracker.fragment
 
+import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.provider.ContactsContract.Intents.Insert.ACTION
+import android.provider.LiveFolders.INTENT
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -17,8 +22,13 @@ import com.project.expirytracker.databinding.FragmentAddItemBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
 
+public var path:String? = null
 class AddItemFragment : Fragment() {
+
     private var _binding: FragmentAddItemBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -38,6 +48,13 @@ class AddItemFragment : Fragment() {
     var expDate: Array<Int>? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        var filePath:String? = null
+//        binding.csvPath.setOnClickListener{
+//            val intent = Intent(Intent.ACTION_GET_CONTENT).setType("*/*")
+//            @Suppress("DEPRECATION")
+//            startActivityForResult(intent,10)
+//        }
+//        readCSV()
 
         binding.enterMfg.setOnClickListener {
             datePicker(1)
@@ -81,6 +98,20 @@ class AddItemFragment : Fragment() {
         }
     }
 
+
+//    @Deprecated("Deprecated in Java")
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        if(requestCode == 10){
+//            if(resultCode == RESULT_OK){
+//                path = data.toString()
+//                var line = ""
+//                var displayData = ""
+//                while(reader.)
+////                Toast.makeText(requireContext(), path, Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//
+//    }
     private fun updateTIL(TIET: TextInputEditText, TIL: TextInputLayout): String {
         var result = "0"
         if(!TIET.text.isNullOrBlank()) {
@@ -122,4 +153,10 @@ class AddItemFragment : Fragment() {
         val database = AppDatabase.getDatabase(requireContext())
         database.databaseDao().insert(data)
     }
+
+
+//    private fun readCSV(){
+//        val file: File = File("food_attribute.csv")
+//        val rows: List<List<String>> = csvReader().readAll(file)
+//    }
 }

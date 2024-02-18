@@ -91,6 +91,14 @@ class HomeFragment : Fragment(), MyItemClickListener {
         })
 
         binding.filterBtn.setOnClickListener{
+            CoroutineScope(Dispatchers.IO).launch {
+                val getData = fetchDatabase(requireContext())
+                itemList.clear()
+                itemList.addAll(getData)
+                withContext(Dispatchers.Main){
+                    adapter?.notifyDataSetChanged()
+                }
+            }
             customMenu.showMenu(requireContext(),it)
         }
     }
@@ -112,14 +120,6 @@ public suspend fun fetchDatabase(context: Context):List<DatabaseModel> {
 @RequiresApi(Build.VERSION_CODES.O)
 public fun sortByWaste(context: Context) {
     val sortedList: MutableList<DatabaseModel> = mutableListOf()
-    CoroutineScope(Dispatchers.IO).launch {
-        val getData = fetchDatabase(context)
-        itemList.clear()
-        itemList.addAll(getData)
-        withContext(Dispatchers.Main){
-            adapter?.notifyDataSetChanged()
-        }
-    }
 //            Toast.makeText(requireContext(), "filterBtn", Toast.LENGTH_SHORT).show()
     itemList.forEach{
         val fromDate = LocalDate.of(it.expYear.toInt(),it.expMonth.toInt(),it.expDate.toInt())

@@ -52,6 +52,7 @@ class ItemAdapter(private val itemList:List<DatabaseModel>, private val listener
     }
 }
 
+
 interface MyItemClickListener {
     fun onItemClicked(item: DatabaseModel)
 }

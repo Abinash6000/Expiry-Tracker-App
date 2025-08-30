@@ -51,3 +51,6 @@ Contributions to the Expiry Tracker App are welcome! If you have suggestions for
 
 https://github.com/Abinash6000/Expiry-Tracker-App/assets/110354418/bf9deac7-c5b0-4f5f-b201-1a75181859e3
 
+<img src="https://github.com/user-attachments/assets/51df027a-6172-49da-b0f1-f762e6c373ff" alt="Image description" width="300"/> | <img src="https://github.com/user-attachments/assets/33b3ea2e-a79d-4335-ad7b-48aaf46fcaf5" alt="Image description" width="300"/>
+<img src="https://github.com/user-attachments/assets/283a8b9d-9d14-49b0-bf93-31b2decc68ae" alt="Image description" width="300"/> | <img src="https://github.com/user-attachments/assets/1ba3000e-6524-4e5f-912d-cb17d226499a" alt="Image description" width="300"/>
+
